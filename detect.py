@@ -81,8 +81,33 @@ def detectPotentialCircles(xycoords, boundingBoxSizeLimit):
     
     return potentialCircles
 
-def stitchPotentialCircles(potentialCircles):
-    return potentialCircles
+def getMergedBoundingBox(boundingBox1, boundingBox2):
+    retVal = [0,0,0,0]
+    retVal[0] = min(boundingBox1[0], boundingBox2[0])
+    retVal[1] = min(boundingBox1[1], boundingBox2[1])
+    retVal[2] = max(boundingBox1[2], boundingBox2[2])
+    retVal[3] = max(boundingBox1[3], boundingBox2[3])
+    return retVal
+
+def stitchPotentialCircles(potentialCircles, boundingBoxSizeLimit, linearError):
+    circles = []
+    root = [0 for _ in range(len(potentialCircles))]
+    for i in range(len(potentialCircles)):
+        if(root[i] == 0):
+            currentPotentialCircle = potentialCircles[i]
+            root[i] = 1
+            for j in range(len(potentialCircles)):
+                if(i != j and root[j] == 0):
+                    mergedBoundingBox = getMergedBoundingBox(potentialCircles[i][0][:], potentialCircles[j][0][:])
+                    area = getArea(mergedBoundingBox)
+                    del_radius = abs(currentPotentialCircle[1] - potentialCircles[j][1])
+                    if(area <= boundingBoxSizeLimit and del_radius < linearError): 
+                        currentPotentialCircle[0] = mergedBoundingBox
+                        currentPotentialCircle[2] = currentPotentialCircle[2].union(potentialCircles[j][2])
+                        root[j] = 1
+            if(len(currentPotentialCircle[2]) > 3): 
+                circles.append(currentPotentialCircle)
+    return circles
 
 def convertToCrpFormat(boundedCircles):
     circles = []
@@ -97,6 +122,6 @@ def detect(xycords, linearError):
     boundingBoxSizeLimit = math.pow(linearError,2)
     print(f'Bounding Box Size : {round(boundingBoxSizeLimit,2)}')
     potentialCircles = detectPotentialCircles(xycords, boundingBoxSizeLimit)
-    boundedCircles = stitchPotentialCircles(potentialCircles)
+    boundedCircles = stitchPotentialCircles(potentialCircles, boundingBoxSizeLimit, linearError)
     circles = convertToCrpFormat(boundedCircles)
     return circles
