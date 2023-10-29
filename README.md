@@ -44,4 +44,4 @@ linear_error is unity (by default)
 
 <h2>Sample Run</h2>
 
-![Screenshot (338)](https://github.com/AT3140/circle_detection/assets/88228233/73ccda9a-497f-4615-8d60-a2bd5ace9b8e)
+![Screenshot (342)](https://github.com/AT3140/circle_detection/assets/88228233/24f4ed6c-1031-4160-81df-25cdc79bde75)
