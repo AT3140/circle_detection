@@ -12,14 +12,14 @@ linear_error is unity (by default)
 <h2>Output Format</h2>
 <p>
   Bounding Box Size : float <br>
-  Detected Circles : int
-  ===
-  CRP 
-  ===
-  center in xy coordinates
-  radius 
-  points belonging to this circle
-  ====
+  Detected Circles : int <br>
+  === <br>
+  CRP <br>
+  === <br>
+  center in xy coordinates <br>
+  radius <br>
+  points belonging to this circle <br>
+  ==== <br>
   ...
 </p>
 
